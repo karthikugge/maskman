@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>TheMaskMan — Database Setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="admin.css" />
+
+
+</head>
+<body>
+  <script>
+    (function() {
+      if (localStorage.getItem('tmm_dark') !== 'false') {
+        document.body.classList.add('dark');
+      }
+    })();
+  </script>
+<div class="shell">
+  <header class="site-header scrolled">
+    <div class="header-inner">
+      <a href="admin.html" class="logo">
+        <span class="logo-icon"><img src="maskmannn.png" style="width:30px;height:30px"></span>
+        <span class="logo-text">TheMaskMan</span>
+      </a>
+      <nav class="desktop-nav">
+        <a href="admin.html" class="nav-link">Products Explorer</a>
+        <a href="admin_pagecards.html" class="nav-link">Pages</a>
+        <a href="admin_updates.html" class="nav-link">Updates</a>
+        <a href="admin_setup.html" class="nav-link active">⚙️ Setup</a>
+      </nav>
+      <div class="header-actions">
+        <button class="btn-primary" onclick="window.location.href='admin.html'">Dashboard</button>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding: 100px 24px 60px; max-width: 1000px; margin: 0 auto;">
+    <h1 style="font-family:var(--font-display); font-size:32px; margin-bottom:12px">Database Infrastructure Setup</h1>
+    <p style="color:var(--text-muted); margin-bottom:32px">Ensure your Supabase instance is prepared for the Advanced Product Detail Page features.</p>
+
+    <div class="setup-card">
+      <div id="statusBadge" class="status-badge status-pending">Checking Database...</div>
+      <h2 style="font-family:var(--font-display); margin-bottom:12px">Advanced PDP Migration</h2>
+      <p style="color:var(--text-muted); line-height:1.6; margin-bottom:24px">New columns for <code>image_gallery</code>, <code>lowest_price_all_time</code>, and detailed <code>price_history</code> must be added to enable premium storefront features.</p>
+
+      <div style="display:flex; gap:12px; margin-bottom:32px">
+        <button class="btn-primary" id="btnRun" onclick="runMigration()">Run Automatic Setup</button>
+        <button class="btn-ghost" onclick="document.getElementById('manualSec').style.display='block'">Manual Instructions</button>
+      </div>
+
+      <div id="output" style="display:none; padding:20px; background:var(--bg-elevated); border-radius:12px; border:1px solid var(--border); font-family:monospace; font-size:12px; margin-bottom:24px">
+        <div id="log"></div>
+      </div>
+
+      <div id="manualSec" style="display:none">
+        <hr style="border:0; border-top:1px solid var(--border); margin:32px 0">
+        <h3 style="font-family:var(--font-display); margin-bottom:12px">Manual SQL Method</h3>
+        <p style="font-size:14px; color:var(--text-muted); margin-bottom:12px">If the automatic setup fails due to SSL restrictions, copy this SQL and paste it into the <b>SQL Editor</b> in your <a href="https://supabase.com/dashboard" target="_blank" style="color:var(--accent)">Supabase Dashboard</a>:</p>
+        
+        <div class="code-block">
+          <button class="copy-btn" onclick="copySql()">Copy SQL</button>
+          <pre id="sqlText">-- Add Gallery and Lowest Price Tracking
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS image_gallery TEXT[] DEFAULT '{}';
+ALTER TABLE public.products ADD COLUMN IF NOT EXISTS lowest_price_all_time NUMERIC(12,2);
+
+-- Enhance Price History Table
+ALTER TABLE public.price_history ADD COLUMN IF NOT EXISTS discounted_price NUMERIC(12,2);</pre>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-text">TheMaskMan</span>
+        <p class="footer-tagline">The internet's best deal discovery platform. Curated. Verified. Free.</p>
+        <div class="footer-socials" aria-label="Social media links">
+          <a href="javascript:void(0)" class="social-link" aria-label="Twitter"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M17.316 6.246c.008.14.008.28.008.42 0 4.296-3.27 9.25-9.25 9.25-1.84 0-3.55-.532-4.99-1.456.254.028.5.036.762.036 1.525 0 2.93-.516 4.047-1.386-1.426-.028-2.625-.966-3.04-2.255.2.028.4.046.607.046.292 0 .583-.038.854-.11C4.736 10.47 3.6 9.19 3.6 7.636v-.04c.44.244.95.392 1.487.412a3.682 3.682 0 01-1.487-3.066c0-.678.183-1.31.5-1.856a10.455 10.455 0 007.578 3.848 4.145 4.145 0 01-.095-.844 3.677 3.677 0 013.678-3.678c1.057 0 2.012.444 2.684 1.16a7.24 7.24 0 002.33-.888 3.67 3.67 0 01-1.614 2.028 7.35 7.35 0 002.115-.572 7.9 7.9 0 01-1.84 1.906z"/></svg></a>
+          <a href="javascript:void(0)" class="social-link" aria-label="Instagram"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="14" height="14" rx="4"/><circle cx="10" cy="10" r="3"/><circle cx="14.5" cy="5.5" r=".75" fill="currentColor" stroke="none"/></svg></a>
+          <a href="javascript:void(0)" class="social-link" aria-label="Telegram"><svg viewBox="0 0 20 20" fill="none"><path d="M3 10l13-6-4 14-3-4-2 1.5L3 10z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M7 11.5l7-7" stroke="currentColor" stroke-width="1.4"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h3 class="footer-col-title">Explore</h3><a href="index.html#deals-section">Top Deals</a><a href="index.html?cat=fashion">Fashion Deals</a><a href="index.html?cat=gadgets">Gadget Deals</a><a href="index.html#deals-section">Today's Picks</a></div>
+        <div class="footer-col"><h3 class="footer-col-title">Company</h3><a href="about.html">About</a><a href="javascript:void(0)">Blog</a><a href="careers.html">Careers</a><a href="javascript:void(0)">Press</a></div>
+        <div class="footer-col"><h3 class="footer-col-title">Legal</h3><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a><a href="cookie.html">Cookie Policy</a><a href="contact.html">Contact</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 TheMaskMan. All rights reserved.</p></div>
+  </footer>
+
+  <nav class="mobile-bottom-nav" aria-label="Mobile bottom navigation">
+    <a href="index.html" class="bottom-nav-item" aria-label="Home"><svg viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Home</span></a>
+    <a href="admin.html" class="bottom-nav-item active" aria-label="Dashboard"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/></svg><span>Dashboard</span></a>
+    <button class="bottom-nav-item" id="mobileMenuBtn" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span>Menu</span></button>
+  </nav>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="mobile-sidebar" id="mobileSidebar" aria-label="Mobile menu" aria-hidden="true">
+    <div class="sidebar-header"><span class="logo-text">TheMaskMan</span><button class="sidebar-close" id="sidebarClose" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+    <nav class="sidebar-nav" aria-label="Mobile admin navigation">
+      <a href="admin.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>Products Explorer</a>
+      <a href="admin_pagecards.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="1.8"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="1.8"/></svg>Pages</a>
+      <a href="admin_updates.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Updates</a>
+      <a href="admin_employees.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Employees</a>
+      <a href="admin_setup.html" class="sidebar-link active"><svg viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.8"/></svg>Setup</a>
+      <div style="border-top:1px solid var(--border);margin:16px 0;"></div>
+      <a href="index.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.8"/></svg>Back to Storefront</a>
+    </nav>
+    <div class="sidebar-footer"><button class="btn-primary sidebar-cta" onclick="logout()" style="width:100%;justify-content:center;">Sign Out</button></div>
+  </aside>
+  <script>(function(){const b=document.getElementById('mobileMenuBtn'),s=document.getElementById('mobileSidebar'),o=document.getElementById('sidebarOverlay'),c=document.getElementById('sidebarClose');function op(){s?.classList.add('open');o?.classList.add('active');}function cl(){s?.classList.remove('open');o?.classList.remove('active');}b?.addEventListener('click',op);c?.addEventListener('click',cl);o?.addEventListener('click',cl);})();</script>
+
+  <div id="toast"></div>
+
+<script>
+  const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? `http://${window.location.hostname}:8000/api`
+    : `${window.location.origin}/api`;
+
+  async function runMigration() {
+    const btn = document.getElementById('btnRun');
+    const out = document.getElementById('output');
+    const log = document.getElementById('log');
+    
+    btn.disabled = true;
+    btn.textContent = 'Migrating...';
+    out.style.display = 'block';
+    log.innerHTML = 'Connecting to backend...<br>';
+
+    try {
+      const res = await fetch(`${API}/admin/migrate-pdp`, { method: 'POST' });
+      const data = await res.json();
+      
+      if (data.success) {
+        log.innerHTML += '<span style="color:#22c55e">✅ SUCCESS! Database updated.</span><br>';
+        log.innerHTML += data.details.join('<br>') + '<br>';
+        document.getElementById('statusBadge').className = 'status-badge status-ok';
+        document.getElementById('statusBadge').textContent = 'Database Ready';
+      } else {
+        log.innerHTML += `<span style="color:#ef4444">❌ FAILED: ${data.error}</span><br>`;
+        log.innerHTML += 'Please use the <b>Manual SQL Method</b> below.<br>';
+        document.getElementById('manualSec').style.display = 'block';
+      }
+    } catch (err) {
+      log.innerHTML += `<span style="color:#ef4444">❌ CONNECTION ERROR: Backend unreachable.</span><br>`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Re-run Setup';
+    }
+  }
+
+  function copySql() {
+    const text = document.getElementById('sqlText').textContent;
+    navigator.clipboard.writeText(text).then(() => alert('SQL copied to clipboard!'));
+  }
+</script>
+</body>
+</html>

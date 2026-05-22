@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>TheMaskMan — Admin Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="admin.css" />
+<style>
+  :root {
+    --glass: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+  html.dark :root {
+    --glass: rgba(0, 0, 0, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.05);
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    font-family: var(--font-main);
+    overflow: hidden;
+  }
+
+  /* Animated Subtle Background */
+  .bg-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--accent-faint) 0%, transparent 70%);
+    top: -200px;
+    right: -200px;
+    z-index: 0;
+    filter: blur(80px);
+    animation: pulse 12s infinite alternate;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.2) translate(-50px, 50px); }
+  }
+
+  .login-card {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 420px;
+    padding: 48px;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    text-align: center;
+    animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes slideIn {
+    0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .login-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .login-logo img { width: 42px; height: 42px; border-radius: 8px; }
+  .login-logo span { 
+    font-family: var(--font-display); 
+    font-size: 26px; 
+    font-weight: 800; 
+    font-style: italic;
+    color: var(--text);
+  }
+
+  .login-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .login-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+
+  .field { text-align: left; margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .field input {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: var(--font-main);
+    font-size: 15px;
+    box-sizing: border-box;
+    transition: all 0.2s;
+  }
+  .field input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-faint);
+  }
+
+  .btn-login {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-login:hover { transform: translateY(-2px); box-shadow: 0 10px 20px var(--accent-faint); }
+  .btn-login:active { transform: translateY(0); }
+  .btn-login:disabled { opacity: 0.6; cursor: wait; }
+
+  .msg-err {
+    margin-top: 16px;
+    padding: 12px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 8px;
+    color: #ef4444;
+    font-size: 13px;
+    display: none;
+  }
+
+  #toast {
+    position: fixed; top: 32px; right: 32px;
+    padding: 16px 24px;
+    background: #000; color: #fff;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    font-size: 14px; font-weight: 600;
+    transform: translateX(120%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1000;
+  }
+  #toast.show { transform: translateX(0); }
+</style>
+
+</head>
+<body>
+  <script>
+    (function() {
+      if (localStorage.getItem('tmm_dark') !== 'false') {
+        document.body.classList.add('dark');
+      }
+    })();
+  </script>
+
+<div class="bg-glow"></div>
+
+<div class="login-card">
+  <div class="login-logo">
+    <img src="maskmannn.png" alt="Logo">
+    <span>TheMaskMan</span>
+  </div>
+  
+  <div class="login-title">Control Center</div>
+  <div class="login-sub">Administrative Access Only</div>
+
+  <form id="loginForm" onsubmit="handleLogin(event)">
+    <div class="field">
+      <label>Email Address</label>
+      <input type="email" id="email" required placeholder="admin@themaskman.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" required placeholder="••••••••" autocomplete="current-password">
+    </div>
+    
+    <div id="loginErr" class="msg-err"></div>
+
+    <button type="submit" id="loginBtn" class="btn-login">
+      <span>Dashboard Access</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+    </button>
+  </form>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? `http://${window.location.hostname}:8000/api`
+  : `${window.location.origin}/api`;
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginErr');
+
+  err.style.display = 'none';
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'Verifying Authenticity...';
+
+  try {
+    const r = await fetch(`${API}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const d = await r.json();
+
+    if (r.ok && d.access_token) {
+      localStorage.setItem('tmm_admin_token', d.access_token);
+      localStorage.setItem('tmm_admin_user', JSON.stringify(d.user));
+      toast('✅ Authentication Successful. Redirecting...');
+      setTimeout(() => { window.location.href = 'admin.html'; }, 1000);
+    } else {
+      err.textContent = d.detail || 'Access Denied: Invalid Credentials';
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.querySelector('span').textContent = 'Dashboard Access';
+    }
+  } catch (e) {
+    err.textContent = 'Connection Error: Dashboard unreachable';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.querySelector('span').textContent = 'Dashboard Access';
+  }
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="referrer" content="no-referrer">
+<title>TheMaskMan — Sign In</title>
+<meta name="description" content="Sign in to TheMaskMan to track prices, save deals, and get personalized offers."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; overflow:hidden; }
+  body { font-family: var(--font-body); background: var(--bg); color: var(--text); }
+  .login-shell { display: flex; height: 100vh; width: 100vw; }
+  .hero-panel { flex: 1.1; position: relative; background: linear-gradient(135deg, #07070d 0%, #0c0c1a 40%, #111128 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 60px; }
+  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(192,255,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(192,255,0,0.03) 1px, transparent 1px); background-size: 60px 60px; animation: gridScroll 25s linear infinite; }
+  @keyframes gridScroll { 0% { transform: translate(0,0); } 100% { transform: translate(60px,60px); } }
+  .hero-orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+  .orb-a { width: 400px; height: 400px; background: radial-gradient(circle, var(--accent-glow), transparent 70%); top: -60px; left: -80px; }
+  .hero-content { position: relative; z-index: 10; text-align: center; max-width: 480px; }
+  .hero-logo { display: inline-flex; align-items: center; gap: 14px; margin-bottom: 40px; }
+  .hero-logo img { width: 56px; height: 56px; border-radius: 14px; box-shadow: 0 0 30px rgba(192,255,0,0.15); }
+  .hero-logo span { font-family: var(--font-display); font-size: 32px; font-weight: 800; font-style: italic; color: #fff; }
+  .hero-tagline { font-size: 42px; font-weight: 800; line-height: 1.15; margin-bottom: 20px; background: linear-gradient(135deg, #fff 30%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-sub { font-size: 16px; color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 40px; }
+  .form-panel { flex: 0.9; display: flex; align-items: center; justify-content: center; padding: 40px; position: relative; background: var(--bg); overflow-y: auto; }
+  .form-container { width: 100%; max-width: 420px; }
+  .form-header { margin-bottom: 32px; }
+  .auth-tabs { display: flex; background: var(--bg-card-2); border-radius: 14px; padding: 4px; margin-bottom: 24px; border: 1px solid var(--border); }
+  .auth-tab { flex: 1; padding: 12px 0; text-align: center; font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; border-radius: 11px; border: none; background: transparent; font-family: var(--font-body); transition: all 0.3s; }
+  .auth-tab.active { background: var(--accent); color: #000; }
+  .auth-panel { display: none; }
+  .auth-panel.active { display: block; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 7px; }
+  .field input { width: 100%; padding: 13px 16px; background: var(--bg-card-2); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: var(--font-body); }
+  .btn-primary { width: 100%; padding: 14px; background: var(--accent); color: #000; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .divider { display: flex; align-items: center; gap: 14px; margin: 20px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .social-row { display: flex; gap: 10px; }
+  .btn-social { flex: 1; padding: 12px; background: var(--bg-card-2); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  #toast { position: fixed; top: 28px; right: 28px; padding: 14px 22px; background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); border-radius: 14px; transform: translateX(120%); transition: 0.4s; z-index: 2000; }
+  #toast.show { transform: translateX(0); }
+</style>
+</head>
+<body class="dark">
+  <script>
+    (function() {
+      if (localStorage.getItem('tmm_dark') !== 'false') {
+        document.body.classList.add('dark');
+      }
+    })();
+  </script>
+  <div class="sticky-pill" id="stickyPill" aria-hidden="true" style="z-index: 2000;">
+    <a href="index.html" class="sp-logo"><img src="maskmannn.png" alt="Logo" width="24" height="24"></a>
+    <button class="sp-search" id="spSearchBtn" style="background:none;border:none;color:inherit;cursor:pointer;"><svg viewBox="0 0 20 20" fill="none" width="16"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.6"/><path d="M13 13l3.5 3.5" stroke="currentColor" stroke-width="1.6"/></svg></button>
+  </div>
+
+  <div class="login-shell">
+    <div class="hero-panel">
+      <div class="hero-grid"></div>
+      <div class="hero-orb orb-a"></div>
+      <div class="hero-content">
+        <div class="hero-logo"><img src="maskmannn.png" alt="Logo"><span>TheMaskMan</span></div>
+        <h2 class="hero-tagline">Track Prices.<br>Catch Deals.</h2>
+        <p class="hero-sub">AI-powered price intelligence. Never overpay again.</p>
+      </div>
+    </div>
+    <div class="form-panel">
+      <div class="form-container">
+        <div class="form-header"><h1 id="authTitle">Welcome Back</h1><p>Sign in to your dashboard.</p></div>
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-tab="email" onclick="switchTab('email')">📧 Email</button>
+          <button class="auth-tab" data-tab="phone" onclick="switchTab('phone')">📱 Phone</button>
+        </div>
+        <div id="panel-email" class="auth-panel active">
+          <form onsubmit="handleEmailAuth(event)">
+            <div class="field"><label>Email Address</label><input type="email" id="emailInput" required placeholder="you@example.com"></div>
+            <div class="field"><label>Password</label><input type="password" id="emailPassword" required placeholder="••••••••"></div>
+            <button type="submit" class="btn-primary">Sign In</button>
+          </form>
+        </div>
+        <div class="divider"><span>or social</span></div>
+        <div class="social-row">
+          <button class="btn-social" onclick="handleSocial('google')">Google</button>
+          <button class="btn-social" onclick="handleSocial('github')">GitHub</button>
+        </div>
+        <button class="acc-btn" style="width:100%; margin-top:12px;" onclick="window.location.href='index.html'">Continue as Guest</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script>
+    const SUPABASE_URL = 'https://qgetnkxrpzwimpqsrklx.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnZXRua3hycHp3aW1wcXNya2x4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzODU5MjksImV4cCI6MjA4OTk2MTkyOX0.cxlcWX4AiKQIJYs5pGhIsOsNVtMkPjuwYskcXsSzhfg';
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    function switchTab(tab) {
+      document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+      document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(`panel-${tab}`).classList.add('active');
+    }
+
+    async function handleEmailAuth(e) {
+      e.preventDefault();
+      const email = document.getElementById('emailInput').value;
+      const password = document.getElementById('emailPassword').value;
+      const { data, error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) { toast(error.message); return; }
+      localStorage.setItem('tmm_user', JSON.stringify(data.user));
+      window.location.href = 'index.html';
+    }
+
+    function toast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+  </script>
+</body>
+</html>

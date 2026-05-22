@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer">
+  <title>Careers – TheMaskMan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  
+</head>
+<body>
+  <script>
+    (function() {
+      if (localStorage.getItem('tmm_dark') !== 'false') {
+        document.body.classList.add('dark');
+      }
+    })();
+  </script>
+
+  <!-- ── FLOATING STICKY PILL ─────────────────────────────────── -->
+  <div class="sticky-pill" id="stickyPill" aria-hidden="true">
+    <a href="index.html" class="sp-logo" aria-label="Home">
+      <img src="maskmannn.png" alt="Logo" width="24" height="24">
+    </a>
+    <button class="sp-search" id="spSearchBtn" aria-label="Search">
+      <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
+        <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M13 13l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="sp-saved" id="spSavedBtn" aria-label="Saved Items">
+      <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+        <path d="M4.3 4.3a5.9 5.9 0 018.4 0l1.3 1.3 1.3-1.3a5.9 5.9 0 018.4 8.4l-9.7 9.7-9.7-9.7a5.9 5.9 0 010-8.4z" stroke="currentColor" stroke-width="1.8"/>
+      </svg>
+      <span class="sp-badge" id="spSavedBadge"></span>
+    </button>
+  </div>
+
+  <!-- ── DESKTOP HEADER ─────────────────────────────────────── -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <a href="index.html" class="logo" aria-label="TheMaskMan home">
+        <span class="logo-icon"><img src="maskmannn.png" alt="Logo" style="width: 30px; height: 30px; border-radius: 4px;"></span>
+        <span class="logo-text">TheMaskMan</span>
+      </a>
+      <button class="header-search-btn" id="searchTriggerBtn" aria-label="Open search">
+        <span class="search-icon"><svg viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.6"/><path d="M13 13l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <span class="search-placeholder">Search deals, brands...</span>
+        <kbd class="search-kbd">⌘K</kbd>
+      </button>
+      <nav class="desktop-nav" id="desktopNav">
+        <div class="nav-indicator" id="navIndicator"></div>
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="index.html#deals-section" class="nav-link">Top Deals</a>
+        <div class="nav-item has-mega">
+          <button class="nav-link">Categories <svg class="nav-chevron" viewBox="0 0 12 12" width="10"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5"/></svg></button>
+          <div class="mega-menu">
+            <div class="mega-menu-inner">
+              <div class="mega-col mega-links">
+                <h4 class="mega-heading">Browse Categories</h4>
+                <a href="index.html#categories-section" class="mega-link">Electronics</a>
+                <a href="index.html#categories-section" class="mega-link">Fashion</a>
+                <a href="index.html#categories-section" class="mega-link">Laptops</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <button class="mode-toggle" id="modeToggle" aria-label="Toggle theme">
+        <svg class="theme-morph-svg" viewBox="0 0 24 24" fill="none" width="18"><circle class="sun-moon-core" cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/><g class="sun-rays" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></g><path class="moon-mask" d="M16 12A4 4 0 0012 8" stroke="currentColor" stroke-width="1.8" opacity="0"/></svg>
+      </button>
+      <div class="header-account" id="headerAccount">
+        <button class="account-toggle" id="accountToggle"><span class="account-avatar" id="accountAvatarIcon"><svg viewBox="0 0 24 24" fill="none" width="20"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke="currentColor" stroke-width="1.8"/></svg></span><span class="account-label" id="accountLabel">Guest</span></button>
+        <div class="account-dropdown" id="accountDropdown">
+          <a href="account.html" class="account-item">My Profile</a>
+          <div id="accountAuthArea" class="auth-split">
+            <a href="user_login.html" class="auth-btn">Log In</a>
+            <a href="user_login.html" class="auth-btn auth-signup">Sign Up</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-ticker" id="headerTicker">
+      <span class="ticker-label"><span class="live-dot"></span> LIVE OFFER</span>
+      <div class="ticker-track"><div class="ticker-content"><span>Join our stealth team. Build the future of Discovery.</span></div></div>
+    </div>
+  </header>
+
+  <div class="breadcrumb-bar" id="breadcrumbBar">
+    <div class="breadcrumb-inner"><a href="index.html">Home</a><span class="bc-sep">◆</span><span class="bc-item">Careers</span></div>
+  </div>
+
+  <main>
+    <section class="page-header" style="padding: 120px 24px 60px; max-width: 1280px; margin: 0 auto; text-align: center;">
+      <h1 class="hero-title" style="font-size:clamp(36px,4vw,56px)">Careers</h1>
+    </section>
+    <section class="page-content" style="padding: 0 24px 80px; max-width: 800px; margin: 0 auto; text-align:center; font-size: 16px; color: var(--text-muted); line-height: 1.8;">
+      <p>We are currently not hiring, but we are always on the lookout for elite engineers and designers to join our stealth team.</p>
+      <p>If you believe you have what it takes to define the future of e-commerce, send your resume to <strong style="color:var(--text)">jobs@themaskman.com</strong>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand"><span class="logo-text">TheMaskMan</span><p class="footer-tagline">The internet's best deal discovery platform.</p></div>
+      <div class="footer-links">
+        <div class="footer-col"><h3 class="footer-col-title">Explore</h3><a href="index.html">Top Deals</a></div>
+        <div class="footer-col"><h3 class="footer-col-title">Company</h3><a href="about.html">About</a><a href="careers.html">Careers</a></div>
+        <div class="footer-col"><h3 class="footer-col-title">Legal</h3><a href="privacy.html">Privacy</a><a href="contact.html">Contact</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <nav class="mobile-bottom-nav">
+    <a href="index.html" class="bottom-nav-item active"><span>Home</span></a>
+    <button class="bottom-nav-item" id="mobileMenuBtn"><span>Menu</span></button>
+  </nav>
+
+  <div class="search-overlay" id="searchOverlay">
+    <div class="search-overlay-inner cmd-palette">
+      <div class="cmd-header"><input type="text" id="searchOverlayInput" class="cmd-input" placeholder="Search..."><kbd>ESC</kbd></div>
+      <div class="cmd-body" id="cmdBody"></div>
+    </div>
+  </div>
+
+  <button class="chatbot-fab" id="chatbotFab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+  <div class="chatbot-window" id="chatbotWindow" aria-hidden="true">
+    <div class="chatbot-header">
+      <div class="chatbot-title">
+        <span class="bot-icon">🤖</span> TheMaskMan AI
+      </div>
+      <button class="chatbot-close nr" id="chatbotClose">✕</button>
+    </div>
+    <div class="chatbot-body" id="chatbotBody">
+      <div class="chat-row bot">
+        <div class="chat-msg bot-msg">
+          Hi! I'm TheMaskMan AI. Looking for something specific? I can find the best deals or cheaper alternatives for you.
+        </div>
+      </div>
+    </div>
+    <div class="chatbot-footer">
+      <form id="chatForm">
+        <input type="text" id="chatInput" placeholder="Ask about deals..." autocomplete="off" />
+        <button type="submit" id="chatSend" class="nr">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>

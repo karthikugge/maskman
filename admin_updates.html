@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="referrer" content="no-referrer">
+<script>
+(function() {
+  const token = localStorage.getItem('tmm_admin_token');
+  if (!token && !window.location.pathname.includes('login.html')) {
+    window.location.href = 'login.html';
+  }
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<title>TheMaskMan — Admin Updates</title>
+<link rel="stylesheet" href="admin.css" />
+
+
+
+<script>
+(function() {
+  const isDark = localStorage.getItem('tmm_dark') !== 'false';
+  document.documentElement.classList.toggle('dark', isDark);
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    const moon = document.querySelector('.toggle-icon-moon');
+    const sun = document.querySelector('.toggle-icon-sun');
+    if(moon) moon.style.display = isDark ? 'none' : 'block';
+    if(sun) sun.style.display = isDark ? 'block' : 'none';
+  });
+})();
+
+function toggleDark() {
+  const d = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('tmm_dark', d);
+  const moon = document.querySelector('.toggle-icon-moon');
+  const sun = document.querySelector('.toggle-icon-sun');
+  if(moon) moon.style.display = d ? 'none' : 'block';
+  if(sun) sun.style.display = d ? 'block' : 'none';
+}
+</script>
+</head>
+<body class="">
+<div class="shell">
+
+  <!-- ── HEADER ── -->
+  <header class="site-header scrolled" id="siteHeader">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">
+          <img src="maskmannn.png" alt="TheMaskMan Logo" style="width: 30px; height: 30px; border-radius: 4px;">
+        </span>
+        <span class="logo-text">TheMaskMan</span>
+        <span style="font-size:10px;color:var(--accent);font-weight:600;margin-left:8px;padding:2px 6px;border:1px solid var(--accent);border-radius:4px;vertical-align:middle;display:inline-block;">ADMIN</span>
+      </a>
+      
+      <!-- Desktop Nav for Admin -->
+      <nav class="desktop-nav">
+        <a href="admin.html" class="nav-link">Products Explorer</a>
+        <a href="admin_pagecards.html" class="nav-link">Pages</a>
+        <a href="admin_updates.html" class="nav-link active">Updates</a>
+        <a href="admin_employees.html" class="nav-link">Employees</a>
+        <a href="admin_setup.html" class="nav-link">⚙️ Setup</a>
+      </nav>
+
+      <div class="header-actions">
+        <div id="topSub" class="header-info">Loading…</div>
+        <div class="conn-badge">
+          <div class="conn-dot" id="connDot"></div>
+          <span id="connText">Connecting…</span>
+        </div>
+        <button class="mode-toggle" id="modeToggle" onclick="toggleDark()" style="margin-right:12px;" aria-label="Toggle Theme">
+          <svg class="toggle-icon-sun" style="display:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="toggle-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <button class="btn-ghost" onclick="retryFailed()">Retry Failed</button>
+        <button class="btn-primary" onclick="refresh()">Refresh</button>
+      
+        <div id="userInfo" class="header-info" style="margin-left:8px; border-left: 1px solid var(--border); padding-left: 12px;">Admin</div>
+        <button class="btn-ghost" onclick="logout()" title="Logout" style="width:38px;height:38px;padding:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- Scrollable content -->
+  <div class="content">
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat s-green"><div class="stat-label">Today</div><div class="stat-val c-green">24</div><div class="stat-sub">updates performed</div></div>
+      <div class="stat s-blue"><div class="stat-label">Total</div><div class="stat-val c-blue">152</div><div class="stat-sub">logs recorded</div></div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-section" style="margin-top:24px;">
+      <div class="table-bar">
+        <div class="table-title">Admin Activity Log</div>
+        <div class="table-count">Recent 50 updates</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Action Type</th>
+              <th>Target Object</th>
+              <th>Administrator</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody id="logsBody">
+            <tr class="loader-row"><td colspan="5"><div class="spin-ring"></div><div style="font-size:11px;color:var(--faint)">Loading activity...</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /shell -->
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-text">TheMaskMan</span>
+        <p class="footer-tagline">The internet's best deal discovery platform. Curated. Verified. Free.</p>
+        <div class="footer-socials" aria-label="Social media links">
+          <a href="javascript:void(0)" class="social-link" aria-label="Twitter"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M17.316 6.246c.008.14.008.28.008.42 0 4.296-3.27 9.25-9.25 9.25-1.84 0-3.55-.532-4.99-1.456.254.028.5.036.762.036 1.525 0 2.93-.516 4.047-1.386-1.426-.028-2.625-.966-3.04-2.255.2.028.4.046.607.046.292 0 .583-.038.854-.11C4.736 10.47 3.6 9.19 3.6 7.636v-.04c.44.244.95.392 1.487.412a3.682 3.682 0 01-1.487-3.066c0-.678.183-1.31.5-1.856a10.455 10.455 0 007.578 3.848 4.145 4.145 0 01-.095-.844 3.677 3.677 0 013.678-3.678c1.057 0 2.012.444 2.684 1.16a7.24 7.24 0 002.33-.888 3.67 3.67 0 01-1.614 2.028 7.35 7.35 0 002.115-.572 7.9 7.9 0 01-1.84 1.906z"/></svg></a>
+          <a href="javascript:void(0)" class="social-link" aria-label="Instagram"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="14" height="14" rx="4"/><circle cx="10" cy="10" r="3"/><circle cx="14.5" cy="5.5" r=".75" fill="currentColor" stroke="none"/></svg></a>
+          <a href="javascript:void(0)" class="social-link" aria-label="Telegram"><svg viewBox="0 0 20 20" fill="none"><path d="M3 10l13-6-4 14-3-4-2 1.5L3 10z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M7 11.5l7-7" stroke="currentColor" stroke-width="1.4"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col"><h3 class="footer-col-title">Explore</h3><a href="index.html#deals-section">Top Deals</a><a href="index.html?cat=fashion">Fashion Deals</a><a href="index.html?cat=gadgets">Gadget Deals</a><a href="index.html#deals-section">Today's Picks</a></div>
+        <div class="footer-col"><h3 class="footer-col-title">Company</h3><a href="about.html">About</a><a href="javascript:void(0)">Blog</a><a href="careers.html">Careers</a><a href="javascript:void(0)">Press</a></div>
+        <div class="footer-col"><h3 class="footer-col-title">Legal</h3><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a><a href="cookie.html">Cookie Policy</a><a href="contact.html">Contact</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 TheMaskMan. All rights reserved.</p></div>
+  </footer>
+
+  <nav class="mobile-bottom-nav" aria-label="Mobile bottom navigation">
+    <a href="index.html" class="bottom-nav-item" aria-label="Home"><svg viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Home</span></a>
+    <a href="admin.html" class="bottom-nav-item active" aria-label="Dashboard"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="2"/></svg><span>Dashboard</span></a>
+    <button class="bottom-nav-item" id="mobileMenuBtn" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span>Menu</span></button>
+  </nav>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="mobile-sidebar" id="mobileSidebar" aria-label="Mobile menu" aria-hidden="true">
+    <div class="sidebar-header"><span class="logo-text">TheMaskMan</span><button class="sidebar-close" id="sidebarClose" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+    <nav class="sidebar-nav" aria-label="Mobile admin navigation">
+      <a href="admin.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8"/></svg>Products Explorer</a>
+      <a href="admin_pagecards.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="1.8"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="1.8"/></svg>Pages</a>
+      <a href="admin_updates.html" class="sidebar-link active"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Updates</a>
+      <a href="admin_employees.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Employees</a>
+      <a href="admin_setup.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z" stroke="currentColor" stroke-width="1.8"/></svg>Setup</a>
+      <div style="border-top:1px solid var(--border);margin:16px 0;"></div>
+      <a href="index.html" class="sidebar-link"><svg viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.8"/></svg>Back to Storefront</a>
+    </nav>
+    <div class="sidebar-footer"><button class="btn-primary sidebar-cta" onclick="logout()" style="width:100%;justify-content:center;">Sign Out</button></div>
+  </aside>
+  <script>(function(){const b=document.getElementById('mobileMenuBtn'),s=document.getElementById('mobileSidebar'),o=document.getElementById('sidebarOverlay'),c=document.getElementById('sidebarClose');function op(){s?.classList.add('open');o?.classList.add('active');}function cl(){s?.classList.remove('open');o?.classList.remove('active');}b?.addEventListener('click',op);c?.addEventListener('click',cl);o?.addEventListener('click',cl);})();</script>
+
+<div id="toast"></div>
+
+
+<script>
+
+
+function logout() {
+  localStorage.removeItem('tmm_admin_token');
+  localStorage.removeItem('tmm_admin_user');
+  window.location.href = 'login.html';
+}
+
+// Update User Name in Header
+document.addEventListener('DOMContentLoaded', () => {
+  const user = JSON.parse(localStorage.getItem('tmm_admin_user') || '{}');
+  const info = document.getElementById('userInfo');
+  if(info && user.full_name) info.textContent = user.full_name;
+});
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? `http://${window.location.hostname}:8000/api`
+  : `${window.location.origin}/api`;
+
+let page = 1, filter = '', csvData = null;
+const PER = 30;
+
+// ── INIT ──────────────────────────────────────────────────────
+(async()=>{
+  await Promise.all([checkConn(), loadStats(), loadLogs()]);
+  setInterval(loadStats, 12000);
+  setInterval(loadLogs, 15000);
+})();
+
+// ── HEALTH ────────────────────────────────────────────────────
+async function checkConn(){
+  try{
+    const d = await fetch(`${API}/health`, { headers: { "Authorization": `Bearer ${localStorage.getItem("tmm_admin_token")}` } }).then(r=>r.json());
+    if(d.status==='ok'){
+      document.getElementById('connDot').className='conn-dot ok';
+      document.getElementById('connText').textContent='Supabase connected';
+    } else throw 0;
+  } catch{
+    document.getElementById('connDot').className='conn-dot err';
+    document.getElementById('connText').textContent='Disconnected';
+  }
+}
+
+// ── STATS ─────────────────────────────────────────────────────
+async function loadStats(){
+  try{
+    const d = await fetch(`${API}/stats`, { headers: { "Authorization": `Bearer ${localStorage.getItem("tmm_admin_token")}` } }).then(r=>r.json());
+    document.getElementById('sTotal').textContent   = d.total   ?? 0;
+    document.getElementById('sSuccess').textContent = d.success ?? 0;
+    document.getElementById('sPending').textContent = d.pending ?? 0;
+    document.getElementById('sFailed').textContent  = d.failed  ?? 0;
+    document.getElementById('topSub').textContent =
+      `${d.total??0} total · ${d.success??0} scraped · ${d.pending??0} pending`;
+  } catch{}
+}
+
+// ── SITE DETECTION ────────────────────────────────────────────
+function detectSite(url){
+  const t = document.getElementById('siteTag');
+  t.className = 'site-tag';
+  const u = url.toLowerCase();
+  if(!u) return;
+  if(u.includes('flipkart.com')){ t.className='site-tag show fk'; t.innerHTML='🏷 Flipkart detected'; }
+  else if(u.includes('amazon.in')){ t.className='site-tag show az'; t.innerHTML='🛒 Amazon India detected'; }
+  else if(u.includes('myntra.com')){ t.className='site-tag show mn'; t.innerHTML='👗 Myntra detected'; }
+  else if(u.includes('nykaa.com')){ t.className='site-tag show nk'; t.innerHTML='💄 Nykaa detected'; }
+}
+
+// ── ADD SINGLE ────────────────────────────────────────────────
+async function addProduct(){
+  const link = document.getElementById('urlIn').value.trim();
+  const sub  = document.getElementById('catIn').value.trim().replace(/\s+/g,'_').toLowerCase() || 'general';
+  if(!link||!link.startsWith('http')) return showMsg('addMsg','err','❌ Enter a valid URL starting with http');
+  const btn = document.getElementById('addBtn');
+  btn.classList.add('spin'); btn.disabled=true;
+  try{
+    const r = await fetch(`${API}/products/add`,{method:'POST',headers:{"Authorization": `Bearer ${localStorage.getItem("tmm_admin_token")}`, 'Content-Type':'application/json'},body:JSON.stringify({link,page_slug:sub})});
+    const d = await r.json();
+    if(r.ok&&d.success){
+      showMsg('addMsg','ok','✅ Added! Scraping in background — table updates in ~15s');
+      document.getElementById('urlIn').value='';
+      document.getElementById('catIn').value='';
+      document.getElementById('siteTag').className='site-tag';
+      setTimeout(()=>{loadStats();loadProducts();},6000);
+    } else showMsg('addMsg','err',`❌ ${d.error||'Failed to add'}`);
+  } catch(e){ showMsg('addMsg','err',`❌ ${e.message}`); }
+  finally{ btn.classList.remove('spin'); btn.disabled=false; }
+}
+
+// ── CSV ───────────────────────────────────────────────────────
+const dz = document.getElementById('dropZone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('on');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('on'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('on');if(e.dataTransfer.files[0])readFile(e.dataTransfer.files[0]);});
+function handleFile(e){if(e.target.files[0])readFile(e.target.files[0]);}
+function readFile(file){
+  const r=new FileReader();
+  r.onload=ev=>{
+    csvData=ev.target.result;
+    const pre=document.getElementById('csvPre');
+    pre.textContent=csvData.trim().split('\n').slice(0,5).join('\n')+(csvData.split('\n').length>5?'\n…':'');
+    pre.style.display='block';
+    document.querySelector('.drop-txt').innerHTML=`<strong style="color:var(--accent)">${file.name}</strong> ready`;
+    toast(`📂 ${file.name} loaded`);
+  };
+  r.readAsText(file);
+}
+
+async function importCSV(){
+  const text = csvData || document.getElementById('csvText').value.trim();
+  if(!text) return showMsg('importMsg','err','❌ No CSV data provided');
+  const btn = document.getElementById('importBtn');
+  btn.classList.add('spin'); btn.disabled=true;
+  try{
+    const blob=new Blob([text],{type:'text/csv'});
+    const form=new FormData();
+    form.append('file',blob,'upload.csv');
+    const r=await fetch(`${API}/products/bulk`,{
+      method:'POST',
+      headers: {"Authorization": `Bearer ${localStorage.getItem("tmm_admin_token")}`},
+      body:form
+    });
+    const d=await r.json();
+    if(r.ok&&d.success){
+      showMsg('importMsg','ok',`✅ Added ${d.added} · Skipped ${d.skipped} duplicates · Scraping in background…`);
+      csvData=null;
+      document.getElementById('csvText').value='';
+      document.getElementById('csvPre').style.display='none';
+      document.getElementById('csvFile').value='';
+      document.querySelector('.drop-txt').innerHTML='Drop <strong>CSV file</strong> here or click to browse';
+      setTimeout(()=>{loadStats();loadProducts();},5000);
+    } else showMsg('importMsg','err',`❌ ${d.error||'Import failed'}`);
+  } catch(e){ showMsg('importMsg','err',`❌ ${e.message}`); }
+  finally{ btn.classList.remove('spin'); btn.disabled=false; }
+}
+
+// ── ACTIVITY LOGS ─────────────────────────────────────────────
+async function loadLogs(){
+  const tbody = document.getElementById('logsBody');
+  try{
+    const r = await fetch(`${API}/admin/logs`, {
+      headers: {"Authorization": `Bearer ${localStorage.getItem("tmm_admin_token")}`}
+    });
+    const logs = await r.json();
+    renderLogs(logs);
+  } catch(e){
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--red);font-size:12px">❌ ${e.message}</td></tr>`;
+  }
+}
+
+function renderLogs(logs){
+  const tbody = document.getElementById('logsBody');
+  if(!logs || !logs.length){
+    tbody.innerHTML = `<tr class="empty-row"><td colspan="5"><div style="text-align:center;padding:40px;color:var(--muted)">No activity recorded yet</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = logs.map(l => {
+    const time = timeAgo(new Date(l.timestamp));
+    const typeClass = l.action_type.includes('DELETE') ? 'failed' : (l.action_type.includes('ADD') || l.action_type.includes('IMPORT') ? 'success' : 'pending');
+    
+    return `<tr>
+      <td style="font-size:11px;color:var(--text-faint)">${time}</td>
+      <td><span class="status-pill ${typeClass}">${l.action_type}</span></td>
+      <td style="font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${l.target_name || ''}">${l.target_name || '—'}</td>
+      <td>${l.administrator}</td>
+      <td style="font-size:12px">${l.details || '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function refresh(){ loadStats(); loadLogs(); toast('↻ Refreshed'); }
+
+// ── HELPERS ───────────────────────────────────────────────────
+function showMsg(id,type,msg){
+  const el=document.getElementById(id);
+  el.className=`msg ${type}`; el.textContent=msg;
+  setTimeout(()=>el.className='msg',7000);
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+function timeAgo(d){
+  const s=Math.round((Date.now()-d)/1000);
+  if(s<60) return `${s}s ago`;
+  if(s<3600) return `${Math.round(s/60)}m ago`;
+  if(s<86400) return `${Math.round(s/3600)}h ago`;
+  return `${Math.round(s/86400)}d ago`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer">
+  <title>TheMaskMan – AI Product Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=2.0" />
+  
+</head>
+<body class="">
+  <script>
+    (function() {
+      if (localStorage.getItem('tmm_dark') !== 'false') {
+        document.body.classList.add('dark');
+      }
+    })();
+  </script>
+
+  <!-- ── FLOATING STICKY PILL ─────────────────────────────────── -->
+  <div class="sticky-pill" id="stickyPill" aria-hidden="true">
+    <a href="index.html" class="sp-logo" aria-label="Home">
+      <img src="maskmannn.png" alt="Logo" width="24" height="24">
+    </a>
+    <button class="sp-search" id="spSearchBtn" aria-label="Search">
+      <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
+        <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M13 13l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="sp-saved" id="spSavedBtn" aria-label="Saved Items">
+      <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+        <path d="M4.3 4.3a5.9 5.9 0 018.4 0l1.3 1.3 1.3-1.3a5.9 5.9 0 018.4 8.4l-9.7 9.7-9.7-9.7a5.9 5.9 0 010-8.4z" stroke="currentColor" stroke-width="1.8"/>
+      </svg>
+      <span class="sp-badge" id="spSavedBadge"></span>
+    </button>
+  </div>
+
+  <!-- ── DESKTOP HEADER ─────────────────────────────────────── -->
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+
+      <!-- Logo -->
+      <a href="user_login.html" class="logo" aria-label="TheMaskMan home">
+        <span class="logo-icon">
+          <img src="maskmannn.png" alt="TheMaskMan Logo" style="width: 30px; height: 30px; border-radius: 4px;">
+        </span>
+        <span class="logo-text" data-text="TheMaskMan">TheMaskMan</span>
+      </a>
+
+      <!-- Search Trigger (Command Palette) -->
+      <button class="header-search-btn" id="searchTriggerBtn" aria-label="Open search">
+        <span class="search-icon" aria-hidden="true">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M13 13l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="search-placeholder">Search deals, brands, categories…</span>
+        <kbd class="search-kbd">⌘K</kbd>
+      </button>
+   
+      <!-- Nav & Mega Menu -->
+      <nav class="desktop-nav" id="desktopNav" aria-label="Primary navigation">
+        <div class="nav-indicator" id="navIndicator"></div>
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="#deals-section" class="nav-link">Top Deals</a>
+        
+        <div class="nav-item has-mega" id="megaNavParent">
+          <button class="nav-link" aria-expanded="false" aria-haspopup="true">
+            Categories
+            <svg class="nav-chevron" viewBox="0 0 12 12" fill="none" width="10"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          
+          <div class="mega-menu" id="megaMenu">
+            <div class="mega-menu-inner">
+              <!-- Left: Parent Links -->
+              <div class="mega-col mega-links">
+                <h4 class="mega-heading">Browse Categories</h4>
+                <a href="index.html#categories-section" class="mega-link"><span class="mega-icon">📱</span> Electronics</a>
+                <a href="index.html#categories-section" class="mega-link"><span class="mega-icon">👕</span> Fashion</a>
+                <a href="index.html#categories-section" class="mega-link"><span class="mega-icon">💻</span> Laptops</a>
+                <a href="index.html#categories-section" class="mega-link"><span class="mega-icon">🎧</span> Audio</a>
+                <a href="index.html#categories-section" class="mega-link"><span class="mega-icon">👟</span> Footwear</a>
+                <a href="index.html#categories-section" class="mega-link mega-view-all">View All Categories &rarr;</a>
+              </div>
+              
+              <!-- Center: Featured Subcats -->
+              <div class="mega-col mega-subcats" id="megaSubcats">
+                <h4 class="mega-heading">Trending Now</h4>
+                <div class="mega-subgrid">
+                  <a href="#" class="mega-subcard"><div class="mega-subimg" style="background:#eaeae6"></div><span>Smartphones</span></a>
+                  <a href="#" class="mega-subcard"><div class="mega-subimg" style="background:#eaeae6"></div><span>Earbuds</span></a>
+                  <a href="#" class="mega-subcard"><div class="mega-subimg" style="background:#eaeae6"></div><span>Sneakers</span></a>
+                  <a href="#" class="mega-subcard"><div class="mega-subimg" style="background:#eaeae6"></div><span>Smartwatches</span></a>
+                </div>
+              </div>
+              
+              <!-- Right: Top Deal Spotlight -->
+              <div class="mega-col mega-spotlight" id="megaSpotlight">
+                <h4 class="mega-heading">Today's Top Deal</h4>
+                <div class="spotlight-card">
+                  <div class="spotlight-img" id="spotlightImg"></div>
+                  <div class="spotlight-info">
+                    <span class="spotlight-badge">🔥 Hot Deal</span>
+                    <h5 id="spotlightTitle">Loading...</h5>
+                    <div class="spotlight-price" id="spotlightPrice">--</div>
+                    <a href="index.html#deals-section" class="spotlight-btn">Shop Now</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Mode Toggle (SVG Morph) -->
+      <button class="mode-toggle" id="modeToggle" aria-label="Toggle dark mode">
+        <svg class="theme-morph-svg" viewBox="0 0 24 24" fill="none" width="18" height="18">
+          <!-- Morphing paths handled in CSS/JS -->
+          <circle class="sun-moon-core" cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8" />
+          <g class="sun-rays" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <line x1="12" y1="2" x2="12" y2="4"/>
+            <line x1="12" y1="20" x2="12" y2="22"/>
+            <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/>
+            <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+            <line x1="2" y1="12" x2="4" y2="12"/>
+            <line x1="20" y1="12" x2="22" y2="12"/>
+            <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/>
+            <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+          </g>
+          <path class="moon-mask" d="M16 12A4 4 0 0012 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0"/>
+        </svg>
+        <span class="toggle-label">Theme</span>
+      </button>
+
+      <!-- Contextual Account Bar -->
+      <div class="header-account" id="headerAccount">
+        <button class="account-toggle" id="accountToggle" aria-label="Account menu" aria-expanded="false">
+          <span class="account-avatar" id="accountAvatarIcon">
+            <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+              <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="account-label" id="accountLabel">Guest</span>
+          <svg class="account-chevron" viewBox="0 0 12 12" fill="none" width="10" height="10">
+            <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="account-dropdown" id="accountDropdown" aria-hidden="true">
+          <div class="account-savings" id="accountSavingsPanel">
+            <span class="savings-lbl">Your Potential Savings</span>
+            <div class="savings-val" id="accountSavingsVal">₹0</div>
+          </div>
+          <div class="account-divider"></div>
+          <a href="account.html" class="account-item">
+            <svg viewBox="0 0 20 20" fill="none" width="16"><circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 18c0-3 3-5.5 7-5.5s7 2.5 7 5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            My Profile
+          </a>
+          <a href="#" class="account-item" id="accountWishlist">
+            <svg viewBox="0 0 20 20" fill="none" width="16"><path d="M5 3h10a1 1 0 011 1v13l-6-3-6 3V4a1 1 0 011-1z" stroke="currentColor" stroke-width="1.4"/></svg>
+            Saved Deals
+          </a>
+          <div class="account-divider"></div>
+          <!-- Dynamic Auth Area -->
+          <div id="accountAuthArea">
+            <div class="auth-split">
+              <a href="user_login.html" class="auth-btn">Log In</a>
+              <a href="user_login.html" class="auth-btn auth-signup">Sign Up</a>
+            </div>
+            <button class="oauth-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+              Continue with Google
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Deal Ticker Sub-bar -->
+    <div class="header-ticker" id="headerTicker">
+      <span class="ticker-label"><span class="live-dot"></span> LIVE OFFER</span>
+      <div class="ticker-track" id="tickerTrack" aria-live="polite">
+        <div class="ticker-content" id="tickerContent">
+          <span class="ticker-item">Loading trending deals…</span>
+          <span class="ticker-sep" aria-hidden="true">◆</span>
+        </div>
+        <div class="ticker-content ticker-clone" aria-hidden="true">
+          <span class="ticker-item">Loading trending deals…</span>
+          <span class="ticker-sep" aria-hidden="true">◆</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── BREADCRUMB & CONTEXT LINE ──────────────────────────────── -->
+  <div class="breadcrumb-bar" id="breadcrumbBar">
+    <div class="breadcrumb-inner" id="breadcrumbInner">
+      <span class="bc-item">Home</span>
+    </div>
+  </div>
+
+  <!-- ── MOBILE SIDEBAR OVERLAY ──────────────────────────────── -->
+  <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+  <!-- ── MOBILE SIDEBAR ──────────────────────────────────────── -->
+  <aside class="mobile-sidebar" id="mobileSidebar" aria-label="Mobile menu" aria-hidden="true">
+    <div class="sidebar-header">
+      <span class="logo-text">TheMaskMan</span>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="sidebar-nav" aria-label="Mobile sidebar navigation">
+      <a href="#" class="sidebar-link active">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.8"/></svg>
+        Home
+      </a>
+      <a href="#deals-section" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z" stroke="currentColor" stroke-width="1.8"/></svg>
+        Top Deals
+      </a>
+      <a href="#" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke="currentColor" stroke-width="1.8"/></svg>
+        Fashion
+      </a>
+      <a href="#" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="currentColor" stroke-width="1.8"/></svg>
+        Gadgets
+      </a>
+      <a href="#categories-section" class="sidebar-link">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/></svg>
+        Categories
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-primary sidebar-cta">Enable Deal Alerts</button>
+    </div>
+  </aside>
+  
+
+  <!-- ── MAIN CONTENT ─────────────────────────────────────────── -->
+  <main>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section" aria-label="Hero">
+      <div class="hero-bg-grid" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Live Deals Updated Daily
+        </div>
+        <h1 class="hero-title">
+          Hunt the Best<br />
+          <span class="accent-text">Deals. Daily.</span>
+        </h1>
+        <p class="hero-subtitle">
+          TheMaskMan scours the internet so you never pay full price.<br />
+          Curated deals on fashion, gadgets, home & more.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary btn-lg">Explore Deals</button>
+          <button class="btn-ghost btn-lg">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M8 7.5l5 2.5-5 2.5V7.5z" fill="currentColor"/>
+            </svg>
+            How it works
+          </button>
+        </div>
+        <div class="hero-stats" role="list">
+          <div class="hero-stat" role="listitem">
+            <span class="stat-value" id="heroStatDeals">—</span>
+            <span class="stat-label">Active Deals</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="hero-stat" role="listitem">
+            <span class="stat-value" id="heroStatBrands">—</span>
+            <span class="stat-label">Categories</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="hero-stat" role="listitem">
+            <span class="stat-value" id="heroStatSavings">—</span>
+            <span class="stat-label">Avg Savings</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-card-float card-float-1" id="heroFloat1">
+          <div class="float-card-inner">
+            <span class="float-tag">🔥 Hot Deal</span>
+            <p class="float-title">Loading…</p>
+            <p class="float-price"><span class="price-new">—</span></p>
+          </div>
+        </div>
+        <div class="hero-card-float card-float-2" id="heroFloat2">
+          <div class="float-card-inner">
+            <span class="float-tag">⚡ Flash Sale</span>
+            <p class="float-title">Loading…</p>
+            <p class="float-price"><span class="price-new">—</span></p>
+          </div>
+        </div>
+        <div class="hero-card-float card-float-3" id="heroFloat3">
+          <div class="float-card-inner">
+            <span class="float-tag">✅ Verified</span>
+            <p class="float-title">Loading…</p>
+            <p class="float-price"><span class="price-new">—</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TICKER / MARQUEE -->
+
+
+    <!-- CATEGORY SCROLL -->
+    <section class="categories-scroll-section" id="categories-section" aria-label="Browse by category">
+      <div class="section-header">
+        <h2 class="section-title">Browse Categories</h2>
+        <a href="#categories-section" class="see-all-link">See all →</a>
+      </div>
+      <div class="categories-track" id="categoriesTrack">
+        <button class="category-chip active" data-category="all">All Deals</button>
+        <button class="category-chip" data-category="fashion">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 2h6l1.5 4H5.5L7 2z" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 6l-2 12h13l-2-12" stroke="currentColor" stroke-width="1.4"/></svg>
+          Fashion
+        </button>
+        <button class="category-chip" data-category="gadgets">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="5" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M8 18h4M10 15v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Gadgets
+        </button>
+        <button class="category-chip" data-category="footwear">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 14c0 0 2-6 7-6s6 3 9 3v3H2v-3z" stroke="currentColor" stroke-width="1.4"/></svg>
+          Footwear
+        </button>
+        <button class="category-chip" data-category="home">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 9.5L10 3l7 6.5V17a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="1.4"/></svg>
+          Home
+        </button>
+        <button class="category-chip" data-category="beauty">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Beauty
+        </button>
+        <button class="category-chip" data-category="travel">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M5 10h10M10 5v10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Travel
+        </button>
+        <button class="category-chip" data-category="sports">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 5.5c1 2 1 5 0 9M14.5 5.5c-1 2-1 5 0 9" stroke="currentColor" stroke-width="1.4"/></svg>
+          Sports
+        </button>
+        <button class="category-chip" data-category="kids">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M5 18c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.4"/></svg>
+          Kids
+        </button>
+        <button class="category-chip" data-category="food">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 2v6c0 2.2 1.8 4 4 4s4-1.8 4-4V2M7 16v2M13 16v2M4 2v4l3 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Food
+        </button>
+      </div>
+    </section>
+
+    <!-- FEATURED DEALS SECTION -->
+    <section class="deals-section" id="deals-section" aria-label="Featured deals">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Featured Deals</h2>
+          <p class="section-subtitle">Hand-picked by our deal hunters</p>
+        </div>
+        <div class="section-controls">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="hot">🔥 Hot</button>
+          <button class="filter-btn" data-filter="new">✨ New</button>
+          <button class="filter-btn" data-filter="verified">✅ Verified</button>
+        </div>
+      </div>
+
+      <!-- Loading Skeleton (hidden by default, shown during filter) -->
+      <div class="skeleton-grid" id="skeletonGrid" aria-hidden="true">
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line w40"></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line w40"></div></div>
+        <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div><div class="skeleton-line w40"></div></div>
+      </div>
+
+      <!-- Deals Grid -->
+      <div class="deals-grid" id="dealsGrid" role="list"></div>
+
+      <!-- Load More -->
+      <div class="load-more-wrap">
+        <button class="btn-outline btn-load-more" id="loadMoreBtn">
+          <span class="load-more-text">Load More Deals</span>
+          <svg class="load-more-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M10 3v14M4 13l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- PROMO BANNER -->
+    <section class="promo-banner" aria-label="Promotional banner">
+      <div class="promo-inner">
+        <div class="promo-text">
+          <h2 class="promo-title">Never Miss a Deal Again</h2>
+          <p class="promo-desc">Get instant alerts when your favourite products drop in price.</p>
+        </div>
+        <button class="btn-dark btn-lg">Enable Notifications →</button>
+      </div>
+      <div class="promo-circles" aria-hidden="true">
+        <div class="promo-circle c1"></div>
+        <div class="promo-circle c2"></div>
+        <div class="promo-circle c3"></div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="newsletter-section" aria-label="Newsletter signup">
+      <div class="newsletter-inner">
+        <div class="newsletter-text">
+          <h2 class="section-title">Get Deals in Your Inbox</h2>
+          <p class="section-subtitle">Join 80,000+ deal hunters. No spam, ever.</p>
+        </div>
+        <form class="newsletter-form" id="newsletterForm" novalidate>
+          <div class="newsletter-input-wrap">
+            <input type="email" id="emailInput" class="newsletter-input" placeholder="your@email.com" autocomplete="email" required aria-label="Email address" />
+            <button type="submit" class="btn-primary newsletter-btn">Subscribe</button>
+          </div>
+          <p class="newsletter-note">✓ Free  ·  ✓ Unsubscribe anytime  ·  ✓ Daily digest option</p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ──────────────────────────────────────────────── -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-text">TheMaskMan</span>
+        <p class="footer-tagline">The internet's best deal discovery platform. Curated. Verified. Free.</p>
+        <div class="footer-socials" aria-label="Social media links">
+          <a href="javascript:void(0)" class="social-link" aria-label="Twitter">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M17.316 6.246c.008.14.008.28.008.42 0 4.296-3.27 9.25-9.25 9.25-1.84 0-3.55-.532-4.99-1.456.254.028.5.036.762.036 1.525 0 2.93-.516 4.047-1.386-1.426-.028-2.625-.966-3.04-2.255.2.028.4.046.607.046.292 0 .583-.038.854-.11C4.736 10.47 3.6 9.19 3.6 7.636v-.04c.44.244.95.392 1.487.412a3.682 3.682 0 01-1.487-3.066c0-.678.183-1.31.5-1.856a10.455 10.455 0 007.578 3.848 4.145 4.145 0 01-.095-.844 3.677 3.677 0 013.678-3.678c1.057 0 2.012.444 2.684 1.16a7.24 7.24 0 002.33-.888 3.67 3.67 0 01-1.614 2.028 7.35 7.35 0 002.115-.572 7.9 7.9 0 01-1.84 1.906z"/></svg>
+          </a>
+          <a href="javascript:void(0)" class="social-link" aria-label="Instagram">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="14" height="14" rx="4"/><circle cx="10" cy="10" r="3"/><circle cx="14.5" cy="5.5" r=".75" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="javascript:void(0)" class="social-link" aria-label="Telegram">
+            <svg viewBox="0 0 20 20" fill="none"><path d="M3 10l13-6-4 14-3-4-2 1.5L3 10z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M7 11.5l7-7" stroke="currentColor" stroke-width="1.4"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h3 class="footer-col-title">Explore</h3>
+          <a href="index.html#deals-section">Top Deals</a>
+          <a href="index.html?cat=fashion">Fashion Deals</a>
+          <a href="index.html?cat=gadgets">Gadget Deals</a>
+          <a href="index.html#deals-section">Today's Picks</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Company</h3>
+          <a href="about.html">About</a>
+          <a href="javascript:void(0)">Blog</a>
+          <a href="careers.html">Careers</a>
+          <a href="javascript:void(0)">Press</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Legal</h3>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Use</a>
+          <a href="cookie.html">Cookie Policy</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 TheMaskMan. All rights reserved. Deals may be affiliate links.</p>
+    </div>
+  </footer>
+
+  <!-- ── MOBILE BOTTOM NAV (Floating Pill) ──────────────────────── -->
+  <nav class="mobile-bottom-nav" aria-label="Mobile bottom navigation">
+    <a href="index.html" class="bottom-nav-item active" aria-label="Home">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Home</span>
+    </a>
+    <button class="bottom-nav-item" id="mobileSearchBtn" aria-label="Search">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5L20 20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <span>Search</span>
+    </button>
+    <a href="javascript:openWishlist()" class="bottom-nav-item" id="mobileSavedBtn" aria-label="Saved Deals">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 4h14a1 1 0 011 1v15l-8-4-8 4V5a1 1 0 011-1z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
+      <span>Saved</span>
+      <span class="m-badge" id="mSavedBadge"></span>
+    </a>
+    <button class="bottom-nav-item" id="mobileMenuBtn" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <span>Menu</span>
+    </button>
+  </nav>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast" role="alert" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ── COMMAND PALETTE SEARCH OVERLAY ───────────────────────── -->
+  <div class="search-overlay" id="searchOverlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Site Search">
+    <div class="search-overlay-inner cmd-palette">
+      
+      <!-- CMD Header -->
+      <div class="cmd-header">
+        <svg class="cmd-icon" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.8"/><path d="M13 13l3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" class="cmd-input" id="searchOverlayInput" placeholder="Search products, brands, categories..." aria-autocomplete="list" autocomplete="off" spellcheck="false" />
+        <button class="cmd-close" id="searchOverlayClose" aria-label="Close search (Esc)">ESC</button>
+      </div>
+
+      <!-- CMD Body (Dynamic) -->
+      <div class="cmd-body" id="cmdBody">
+        
+        <!-- Empty State: Trending Snippets -->
+        <div class="cmd-empty-state" id="cmdEmptyState">
+          <h4 class="cmd-section-title">Trending Now</h4>
+          <div class="cmd-trending-grid" id="cmdTrendingGrid">
+            <!-- Populated via JS -->
+          </div>
+          <div class="cmd-quick-links">
+            <button class="cmd-chip">Nike offers</button>
+            <button class="cmd-chip">AirPods Pro</button>
+            <button class="cmd-chip">Gaming Laptops</button>
+          </div>
+        </div>
+
+        <!-- Populated Results -->
+        <div class="cmd-results" id="cmdResults" hidden>
+          
+          <div class="cmd-group" id="cmdGroupProducts">
+            <h4 class="cmd-section-title">Products</h4>
+            <div class="cmd-list" id="cmdListProducts" role="listbox"></div>
+          </div>
+
+          <div class="cmd-group" id="cmdGroupCategories">
+            <h4 class="cmd-section-title">Categories</h4>
+            <div class="cmd-list" id="cmdListCategories" role="listbox"></div>
+          </div>
+
+        </div>
+
+        <!-- No Results -->
+        <div class="cmd-no-results" id="cmdNoResults" hidden>
+          <div class="cmd-no-icon">😕</div>
+          <p>We couldn't find anything matching "<span id="cmdQueryStr"></span>".</p>
+          <span>Try checking for typos or using more generic terms.</span>
+        </div>
+      </div>
+
+      <!-- CMD Footer Hints -->
+      <div class="cmd-footer">
+        <div class="cmd-hint"><kbd>↑</kbd> <kbd>↓</kbd> <span>to navigate</span></div>
+        <div class="cmd-hint"><kbd>Enter</kbd> <span>to select</span></div>
+        <div class="cmd-hint"><kbd>Esc</kbd> <span>to close</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── CHATBOT UI ───────────────────────────────────────────── -->
+  <button class="chatbot-fab" id="chatbotFab" aria-label="Open AI Assistant">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+  </button>
+  
+  <div class="chatbot-window" id="chatbotWindow" aria-hidden="true">
+    <div class="chatbot-header">
+      <div class="chatbot-title">
+        <span class="bot-icon">🤖</span> TheMaskMan AI
+      </div>
+      <button class="chatbot-close nr" id="chatbotClose">✕</button>
+    </div>
+    <div class="chatbot-body" id="chatbotBody">
+      <div class="chat-row bot">
+        <div class="chat-msg bot-msg">
+          Hi! I'm TheMaskMan AI. Looking for something specific? I can find the best deals or cheaper alternatives for you.
+        </div>
+      </div>
+    </div>
+    <div class="chatbot-footer">
+      <form id="chatForm">
+        <input type="text" id="chatInput" placeholder="Ask about deals..." autocomplete="off" />
+        <button type="submit" id="chatSend" class="nr">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="index.js?v=2.0"></script>
+</body>
+</html>
